@@ -10,7 +10,7 @@
 
 ## License
 
-[MIT](./LICENSE) License © 2023-PRESENT [Anthony Fu](https://github.com/antfu)
+[MIT](./LICENSE) License © 2024-PRESENT [Digital Cooperative](https://github.com/intellect-run)
 
 <!-- Badges -->
 
