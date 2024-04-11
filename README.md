@@ -1,4 +1,4 @@
-# pkg-placeholder
+# COOPARSER
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -6,18 +6,7 @@
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![License][license-src]][license-href]
 
-_description_
-
-> **Note**:
-> Replace `pkg-placeholder`, `_description_` and `antfu` globally to use this template.
-
-## Sponsors
-
-<p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'/>
-  </a>
-</p>
+Пакет производит распаковку блоков, сохраняя действия и дельты таблиц в базу данных mongodb. Действия, на которые осуществляется подписка, содержат информацию, которая используется командным кошельком для формирования документа.
 
 ## License
 

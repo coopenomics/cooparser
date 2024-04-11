@@ -1,2 +1,5 @@
-export const one = 1
-export const two = 2
+import { run as ActionsRunner } from './ParserActions'
+import { run as DeltasRunner } from './ParserDeltas'
+
+ActionsRunner()
+DeltasRunner()

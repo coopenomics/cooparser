@@ -1,18 +1,17 @@
 {
-  "name": "pkg-placeholder",
+  "name": "cooparser",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@8.15.3",
-  "description": "_description_",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "description": "parser of antelope blockchain for cooperatives documents",
+  "author": "Alex Ant <archiday.space@gmail.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/pkg-placeholder#readme",
+  "homepage": "https://github.com/intellect-run/cooparser#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/pkg-placeholder.git"
+    "url": "git+https://github.com/intellect-run/cooparser.git"
   },
-  "bugs": "https://github.com/antfu/pkg-placeholder/issues",
+  "bugs": "https://github.com/intellect-run/cooparser/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
@@ -46,6 +45,13 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
+  },
+  "dependencies": {
+    "@blockmatic/eosio-ship-reader": "^1.2.0",
+    "dotenv": "^16.4.5",
+    "eosjs": "^22.1.0",
+    "mongodb": "^6.5.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.4",

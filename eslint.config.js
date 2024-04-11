@@ -9,7 +9,9 @@ export default antfu(
   },
   {
     rules: {
-      // overrides
+      'node/prefer-global/process': 'off', // Отключает правило node/prefer-global/process
+      'no-console': 'off', // Разрешает использование console.log,
+      'import/first': 'off',
     },
   },
 )
