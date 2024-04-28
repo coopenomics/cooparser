@@ -1,10 +1,10 @@
 {
-  "name": "cooparser",
+  "name": "cooparser-ts",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "pnpm@8.15.3",
   "description": "parser of antelope blockchain for cooperatives documents",
-  "author": "Alex Ant <archiday.space@gmail.com>",
+  "author": "Alex Ant <dacom.dark.sun@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/intellect-run/cooparser#readme",
   "repository": {
@@ -42,6 +42,7 @@
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
     "start": "esno src/index.ts",
+    "parse": "esno test/parse.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
@@ -49,6 +50,7 @@
   "dependencies": {
     "@blockmatic/eosio-ship-reader": "^1.2.0",
     "dotenv": "^16.4.5",
+    "dotenv-expand": "^11.0.6",
     "eosjs": "^22.1.0",
     "mongodb": "^6.5.0",
     "node-fetch": "^3.3.2"
