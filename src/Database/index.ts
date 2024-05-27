@@ -1,6 +1,7 @@
-import type { Collection, Db } from 'mongodb'
+import type { Collection, Db, Filter } from 'mongodb'
 import { MongoClient } from 'mongodb'
 import { mongoUri } from '../config'
+import type { IAction, IActionResult, IDelta, ITableResult } from '../Types'
 
 export class Database {
   private client: MongoClient
@@ -35,49 +36,66 @@ export class Database {
     await this.deltas.insertOne(delta)
   }
 
-  // async getDeltaFromDB(filter: Filter<IFilterDeltas>): Promise<any> {
-  //   if (!this.deltas)
-  //     throw new Error('Database not connected')
+  async getDelta(filter: Filter<IDelta>): Promise<any> {
+    if (!this.deltas)
+      throw new Error('Database not connected')
 
-  //   const result = await this.deltas.findOne(filter as any)
+    const result = await this.deltas.findOne(filter as any)
 
-  //   return result
-  // }
+    return result
+  }
 
-  // async getDeltasFromDB(filter: Filter<IFilterDeltas>): Promise<any> {
-  //   if (!this.deltas)
-  //     throw new Error('Database not connected')
+  async getTables(filter?: Filter<IDelta>, page: number = 1, limit: number = 10): Promise<ITableResult> {
+    if (!this.deltas)
+      throw new Error('Database not connected')
 
-  //   const pipeline = [
-  //     { $match: filter },
-  //     { $sort: { primary_key: -1 } },
-  //     { $group: { _id: '$primary_key', present: { $first: '$present' }, value: { $first: '$value' } } },
-  //     { $match: { present: true } },
-  //     { $project: { _id: 0, value: 1 } },
-  //   ]
+    const pipeline = [
+      { $match: filter },
+      { $sort: { primary_key: -1 } },
+      { $group: { _id: '$primary_key', doc: { $first: '$$ROOT' } } },
+      { $match: { 'doc.present': true } },
+      { $replaceRoot: { newRoot: '$doc' } },
+    ]
 
-  //   const result = await this.deltas.aggregate(pipeline).toArray()
+    const [result] = await Promise.all([
+      this.deltas.aggregate(pipeline)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .toArray(),
+    ])
 
-  //   return result
-  // }
+    return {
+      results: result as IDelta[], // Change the type to IDelta[]
+      page,
+      limit,
+    }
+  }
 
-  // async getActionsFromDB(filter: Filter<IFilterDeltas>): Promise<any> {
-  //   if (!this.actions)
-  //     throw new Error('Database not connected')
+  async getActions(filter?: Filter<IAction>, page: number = 1, limit: number = 10): Promise<IActionResult> {
+    if (!this.actions)
+      throw new Error('Database not connected')
 
-  //   const result = await this.actions.find(filter as any).toArray()
+    const query = filter || {}
+    const result = await this.actions.find(query as any)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .toArray()
 
-  //   return result
-  // }
+    return {
+      results: result as unknown as IAction[],
+      page,
+      limit,
+    }
+  }
 
-  // async getActionFromDB(filter: Filter<IFilterActions>): Promise<any> {
-  //   if (!this.actions)
-  //     throw new Error('Database not connected')
+  async getAction(filter: Filter<Filter<IAction>>): Promise<any> {
+    if (!this.actions)
+      throw new Error('Database not connected')
 
-  //   const result = await this.actions.findOne(filter as any)
+    const result = await this.actions.findOne(filter as any)
 
-  //   return result ? result.value : null
-  // }
+    return result ? result.value : null
+  }
 
   async getCurrentBlock(): Promise<number> {
     if (!this.sync)

@@ -1,5 +1,5 @@
 import type { Database } from '../../Database'
-import type { EosioReaderBlock, EosioShipReaderResolved } from '../../Types'
+import type { EosioShipReaderResolved, IBlock } from '../../Types'
 
 export async function BlockParser(db: Database, reader: EosioShipReaderResolved) {
   const { blocks$, errors$, close$ } = reader
@@ -14,7 +14,7 @@ export async function BlockParser(db: Database, reader: EosioShipReaderResolved)
     setTimeout(() => process.exit(1), 10000)
   })
 
-  blocks$.subscribe(async (block: EosioReaderBlock) => {
+  blocks$.subscribe(async (block: IBlock) => {
     // console.log('new block: ', block)
     process.stdout.write('\r') // Возврат каретки в начало строки
     process.stdout.write(`Блок: ${block.block_num}`) // Ваш текст
