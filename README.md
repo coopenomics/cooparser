@@ -10,7 +10,7 @@
 
 ## License
 
-[MIT](./LICENSE) License © 2024-PRESENT [Digital Cooperative](https://github.com/intellect-run)
+[MIT](./LICENSE) License © 2024-PRESENT [Digital Cooperative](https://github.com/copenomics)
 
 <!-- Badges -->
 

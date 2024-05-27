@@ -2,16 +2,16 @@
   "name": "cooparser-ts",
   "type": "module",
   "version": "0.0.3",
-  "packageManager": "pnpm@8.15.3",
-  "description": "parser of antelope blockchain for cooperatives documents",
+  "packageManager": "pnpm@9.0.6",
+  "description": "",
   "author": "Alex Ant <dacom.dark.sun@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/intellect-run/cooparser#readme",
+  "homepage": "https://github.com/copenomics/cooparser#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/intellect-run/cooparser.git"
+    "url": "git+https://github.com/copenomics/cooparser.git"
   },
-  "bugs": "https://github.com/intellect-run/cooparser/issues",
+  "bugs": "https://github.com/copenomics/cooparser/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {

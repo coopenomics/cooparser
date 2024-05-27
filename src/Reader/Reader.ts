@@ -10,14 +10,30 @@ import {
   createEosioShipReader,
 } from '@blockmatic/eosio-ship-reader'
 
-import { eosioApi, shipApi, subsribedActions, subsribedTables } from '../config'
-import { fetchAbi, getInfo } from './Utils'
+import { eosioApi, finishBlock, shipApi, startBlock, subsribedActions, subsribedTables } from '../config'
+import type { Database } from '../Database'
+import { fetchAbi, getInfo } from '../Utils/Blockchain'
 
 const table_rows_whitelist: () => EosioReaderTableRowFilter[] = () => subsribedTables
 const actions_whitelist: () => EosioReaderActionFilter[] = () => subsribedActions
+console.log(subsribedTables)
+console.log(subsribedActions)
 
-export async function loadReader() {
+export async function loadReader(db: Database) {
+  let currentBlock = await db.getCurrentBlock()
+
   const info = await getInfo()
+
+  if (currentBlock === 0)
+    currentBlock = Number(startBlock)
+
+  console.log('Стартуем с блока: ', currentBlock)
+  console.log('Завершим на блоке: ', finishBlock)
+  console.log('Высота цепочки: ', info.head_block_num)
+  console.log('Очищаем действия и дельты после блока: ', currentBlock)
+
+  await db.purgeAfterBlock(currentBlock)
+
   const unique_contract_names = [...new Set(table_rows_whitelist().map(row => row.code)), ...new Set(actions_whitelist().map(row => row.code))]
   const abisArr = await Promise.all(unique_contract_names.map(account_name => fetchAbi(account_name)))
 
@@ -46,11 +62,11 @@ export async function loadReader() {
     actions_whitelist,
     contract_abis,
     request: {
-      start_block_num: info.head_block_num + 10,
-      end_block_num: 0xFFFFFFFF,
+      start_block_num: currentBlock,
+      end_block_num: Number(finishBlock), // info.head_block_num,
       max_messages_in_flight: 50,
       have_positions: [],
-      irreversible_only: false,
+      irreversible_only: true,
       fetch_block: true,
       fetch_traces: true,
       fetch_deltas: true,
