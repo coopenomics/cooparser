@@ -1,17 +1,17 @@
-import { getActions, getCurrentBlock, getTables, init } from '../src'
-import type { IAction } from '../src/Types'
+// import { getActions, getCurrentBlock, getTables, init } from '../src'
+// import type { IAction } from '../src/Types'
 
-await init()
-const current_block = await getCurrentBlock()
+// await init()
+// const current_block = await getCurrentBlock()
 
-console.log('current_block: ', current_block)
+// console.log('current_block: ', current_block)
 
-const filter = { 'value.username': 'dqcnrmjkrglx' }
+// const filter = { 'value.username': 'dqcnrmjkrglx' }
 
-const deltas = await getTables(filter, 1, 1)
-console.log('deltas: ', deltas)
+// const deltas = await getTables(filter, 1, 1)
+// console.log('deltas: ', deltas)
 
-const filter_actions = { name: 'newdecision' } as IAction
+// const filter_actions = { name: 'newdecision' } as IAction
 
-const actions = await getActions(filter_actions, 1, 1)
-console.log('actions: ', actions)
+// const actions = await getActions(filter_actions, 1, 1)
+// console.log('actions: ', actions)

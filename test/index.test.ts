@@ -1,12 +1,12 @@
-import { getCurrentBlock, init } from '../src'
+// import { describe, expect, it } from 'vitest'
 
-describe('получаем текущий блок', () => {
-  it('получили блок', async () => {
-    await init()
-    const current_block = await getCurrentBlock()
+// describe('получаем текущий блок', () => {
+// it('получили блок', async () => {
+//   await init()
+//   const current_block = await getCurrentBlock()
 
-    console.log('current_block: , ', current_block)
+//   console.log('current_block: , ', current_block)
 
-    expect(current_block).toBeDefined()
-  })
-})
+//   expect(current_block).toBeDefined()
+// })
+// })

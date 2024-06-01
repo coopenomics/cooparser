@@ -1,35 +1,50 @@
+import express from 'express'
+import 'express-async-errors'
 import type { Filter } from 'mongodb'
-import { db } from './Database'
-import { ActionsParser } from './ActionParser'
-import { DeltasParser } from './DeltaParser'
-import { loadReader } from './Reader'
-import { BlockParser } from './BlockParser/Parser/BlockParser'
-import type { IAction, IActionResult, IDelta, ITableResult } from './Types'
+import { db, init } from './Database'
+import type { IAction, IDelta } from './Types'
+import { Parser } from './Parser'
 
-export async function init() {
-  return db.connect().then(() => {
-    console.log('parser databases connected')
+const app = express()
+
+app.use(express.json()) // Для обработки JSON-запросов
+app.use(express.urlencoded({ extended: true })) // Для обработки URL-encoded запросов
+
+const port = process.env.PORT || 4000
+
+export const parser = new Parser()
+
+init().then(() => {
+  app.listen(port, () => {
+    console.log(`API обозревателя запущено на http://localhost:${port}`)
+    if (process.env.ACTIVATE_PARSER === '1')
+      parser.start()
   })
-}
+})
 
-export async function getTables(filter?: Filter<IDelta>, page: number = 1, limit: number = 10): Promise<ITableResult> {
-  return await db.getTables(filter, page, limit)
-}
+app.get('/get-tables', async (req: any, res: any) => {
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.limit) || 10
+  const filter: Filter<IDelta> = req.query.filter ? JSON.parse(req.query.filter) : {}
+  const result = await db.getTables(filter, page, limit)
+  res.json(result)
+})
 
-export async function getActions(filter?: Filter<IAction>, page: number = 1, limit: number = 10): Promise<IActionResult> {
-  return await db.getActions(filter, page, limit)
-}
+app.get('/get-actions', async (req: any, res: any) => {
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.limit) || 10
+  const filter: Filter<IAction> = req.query.filter ? JSON.parse(req.query.filter) : {}
+  const result = await db.getActions(filter, page, limit)
+  res.json(result)
+})
 
-export async function getCurrentBlock() {
-  return await db.getCurrentBlock()
-}
+app.get('/get-current-block', async (req: any, res: any) => {
+  const result = await db.getCurrentBlock()
+  res.json(result)
+})
 
-export class Parser {
-  async start() {
-    await init()
-    const reader = await loadReader(db)
-    BlockParser(db, reader)
-    ActionsParser(db, reader)
-    DeltasParser(db, reader)
-  }
-}
+// Глобальный обработчик ошибок
+app.use((err: any, req: any, res: any, _next: any) => {
+  console.error(err)
+  res.status(500).send(err.message)
+})
