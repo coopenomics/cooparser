@@ -1,24 +1,27 @@
-FROM node:alpine
+FROM node:20-slim AS base
 
-# Создаем рабочую директорию и устанавливаем права доступа
-RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 
-WORKDIR /usr/src/node-app
+RUN corepack enable
 
-# Копируем файлы зависимостей
-COPY package.json pnpm-lock.yaml ./
+COPY . /app
+WORKDIR /app
 
-USER node
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Устанавливаем pnpm через npm для большей надежности, используя флаг --unsafe-perm
-RUN npm install -g pnpm --unsafe-perm && \
-    pnpm install
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
-# Копируем остальные файлы проекта
-COPY --chown=node:node . .
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
 
 # Открываем порт
 EXPOSE 4000
 
 # Запускаем приложение
-CMD ["npx", "ts-node", "src/index.ts"]
+CMD ["npx", "esno", "src/index.ts"]
+ 

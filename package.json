@@ -44,7 +44,6 @@
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepare": "simple-git-hooks",
     "doc": "typedoc"
   },
   "dependencies": {
