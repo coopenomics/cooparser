@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import type { IActionConfig, IDeltaConfig } from './Types'
 
 dotenv.config()
 
@@ -15,9 +16,10 @@ export const shipApi = getEnvVar('SHIP')
 export const mongoUri = getEnvVar('MONGO_EXPLORER_URI')
 export const startBlock = getEnvVar('START_BLOCK')
 export const finishBlock = getEnvVar('FINISH_BLOCK')
-
+export const redisPort = getEnvVar('REDIS_PORT')
+export const redisStreamLimit = Number(getEnvVar('REDIS_STREAM_LIMIT'))
 // --------------------------
-export const subsribedTables = [
+export const subsribedTables: IDeltaConfig[] = [
   // документы
   { code: 'draft', table: 'drafts' },
   { code: 'draft', table: 'translations' },
@@ -35,7 +37,10 @@ export const subsribedTables = [
   { code: 'registrator', table: 'orgs' },
 ]
 
-export const subsribedActions = [
+export const subsribedActions: IActionConfig[] = [
+  { code: 'eosio.token', action: 'transfer', notify: true },
+  { code: 'registrator', action: 'confirmreg', notify: true },
+
   { code: 'soviet', action: 'votefor' },
   { code: 'soviet', action: 'voteagainst' },
   { code: 'soviet', action: 'newsubmitted' },
