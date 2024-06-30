@@ -1,7 +1,14 @@
 import Redis from 'ioredis'
-import { redisPort, redisStreamLimit } from '../config'
+import { redisHost, redisPassword, redisPort, redisStreamLimit } from '../config'
 
-const redis = new Redis(redisPort)
+// const redis = new Redis(redisPort)
+
+const redis = new Redis({
+  port: Number(redisPort),
+  host: redisHost,
+  password: redisPassword,
+  // другие опции при необходимости
+})
 
 const streamName = 'notifications'
 
