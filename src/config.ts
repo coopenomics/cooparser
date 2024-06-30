@@ -17,6 +17,8 @@ export const mongoUri = getEnvVar('MONGO_EXPLORER_URI')
 export const startBlock = getEnvVar('START_BLOCK')
 export const finishBlock = getEnvVar('FINISH_BLOCK')
 export const redisPort = getEnvVar('REDIS_PORT')
+export const redisHost = getEnvVar('REDIS_HOST')
+export const redisPassword = getEnvVar('REDIS_PASSWORD')
 export const redisStreamLimit = Number(getEnvVar('REDIS_STREAM_LIMIT'))
 // --------------------------
 export const subsribedTables: IDeltaConfig[] = [
