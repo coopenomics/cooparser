@@ -36,6 +36,8 @@
     "dist"
   ],
   "scripts": {
+    "deploy-testnet": "git checkout testnet && git merge main && git push origin testnet",
+    "deploy-production": "git checkout production && git merge main && git push origin production",
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint .",
